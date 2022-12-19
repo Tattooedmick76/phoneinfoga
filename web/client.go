@@ -3,12 +3,13 @@ package web
 import (
 	"embed"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"mime"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 //go:embed client/dist/*
