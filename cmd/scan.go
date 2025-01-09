@@ -11,7 +11,6 @@ import (
 	"github.com/sundowndev/phoneinfoga/v2/lib/number"
 	"github.com/sundowndev/phoneinfoga/v2/lib/output"
 	"github.com/sundowndev/phoneinfoga/v2/lib/remote"
-	"os"
 )
 
 type ScanCmdOptions struct {
@@ -53,7 +52,7 @@ func NewScanCmd(opts *ScanCmdOptions) *cobra.Command {
 }
 
 func runScan(opts *ScanCmdOptions) {
-	fmt.Printf(color.WhiteString("Running scan for phone number %s...\n\n"), opts.Number)
+	fmt.Fprintf(color.Output, color.WhiteString("Running scan for phone number %s...\n\n"), opts.Number)
 
 	if valid := number.IsValid(opts.Number); !valid {
 		logrus.WithFields(map[string]interface{}{
@@ -81,9 +80,10 @@ func runScan(opts *ScanCmdOptions) {
 	remoteLibrary := remote.NewLibrary(f)
 	remote.InitScanners(remoteLibrary)
 
-	result, errs := remoteLibrary.Scan(num)
+	// Scanner options are currently not used in CLI
+	result, errs := remoteLibrary.Scan(num, remote.ScannerOptions{})
 
-	err = output.GetOutput(output.Console, os.Stdout).Write(result, errs)
+	err = output.GetOutput(output.Console, color.Output).Write(result, errs)
 	if err != nil {
 		exitWithError(err)
 	}

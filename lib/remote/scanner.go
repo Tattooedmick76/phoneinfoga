@@ -2,10 +2,20 @@ package remote
 
 import (
 	"fmt"
-	"github.com/sundowndev/phoneinfoga/v2/lib/number"
 	"os"
 	"plugin"
+
+	"github.com/sundowndev/phoneinfoga/v2/lib/number"
 )
+
+type ScannerOptions map[string]interface{}
+
+func (o ScannerOptions) GetStringEnv(k string) string {
+	if v, ok := o[k].(string); ok {
+		return v
+	}
+	return os.Getenv(k)
+}
 
 type Plugin interface {
 	Lookup(string) (plugin.Symbol, error)
@@ -14,8 +24,8 @@ type Plugin interface {
 type Scanner interface {
 	Name() string
 	Description() string
-	DryRun(number.Number) error
-	Run(number.Number) (interface{}, error)
+	DryRun(number.Number, ScannerOptions) error
+	Run(number.Number, ScannerOptions) (interface{}, error)
 }
 
 func OpenPlugin(path string) error {
@@ -25,7 +35,7 @@ func OpenPlugin(path string) error {
 
 	_, err := plugin.Open(path)
 	if err != nil {
-		return fmt.Errorf("given plugin %s is not valid", path)
+		return fmt.Errorf("given plugin %s is not valid: %v", path, err)
 	}
 
 	return nil

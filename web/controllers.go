@@ -24,6 +24,7 @@ type healthResponse struct {
 	Success bool   `json:"success"`
 	Version string `json:"version"`
 	Commit  string `json:"commit"`
+	Demo    bool   `json:"demo"`
 }
 
 // @ID getAllNumbers
@@ -75,7 +76,7 @@ func localScan(c *gin.Context) {
 		return
 	}
 
-	result, err := remote.NewLocalScanner().Run(*num)
+	result, err := remote.NewLocalScanner().Run(*num, make(remote.ScannerOptions))
 	if err != nil {
 		handleError(c, errors.NewInternalError(err))
 		return
@@ -103,7 +104,7 @@ func numverifyScan(c *gin.Context) {
 		return
 	}
 
-	result, err := remote.NewNumverifyScanner(suppliers.NewNumverifySupplier()).Run(*num)
+	result, err := remote.NewNumverifyScanner(suppliers.NewNumverifySupplier()).Run(*num, make(remote.ScannerOptions))
 	if err != nil {
 		handleError(c, errors.NewInternalError(err))
 		return
@@ -131,7 +132,7 @@ func googleSearchScan(c *gin.Context) {
 		return
 	}
 
-	result, err := remote.NewGoogleSearchScanner().Run(*num)
+	result, err := remote.NewGoogleSearchScanner().Run(*num, make(remote.ScannerOptions))
 	if err != nil {
 		handleError(c, errors.NewInternalError(err))
 		return
@@ -159,7 +160,7 @@ func ovhScan(c *gin.Context) {
 		return
 	}
 
-	result, err := remote.NewOVHScanner(suppliers.NewOVHSupplier()).Run(*num)
+	result, err := remote.NewOVHScanner(suppliers.NewOVHSupplier()).Run(*num, make(remote.ScannerOptions))
 	if err != nil {
 		handleError(c, errors.NewInternalError(err))
 		return
@@ -183,5 +184,6 @@ func healthHandler(c *gin.Context) {
 		Success: true,
 		Version: build.Version,
 		Commit:  build.Commit,
+		Demo:    build.IsDemo(),
 	})
 }

@@ -35,8 +35,11 @@ definitions:
     properties:
       number:
         type: string
+      options:
+        $ref: '#/definitions/remote.ScannerOptions'
     required:
     - number
+    - options
     type: object
   handlers.DryRunScannerResponse:
     properties:
@@ -56,13 +59,15 @@ definitions:
     properties:
       number:
         type: string
+      options:
+        $ref: '#/definitions/remote.ScannerOptions'
     required:
     - number
+    - options
     type: object
   handlers.RunScannerResponse:
     properties:
-      result:
-        type: object
+      result: {}
     type: object
   handlers.Scanner:
     properties:
@@ -156,6 +161,9 @@ definitions:
       zip_code:
         type: string
     type: object
+  remote.ScannerOptions:
+    additionalProperties: true
+    type: object
   web.JSONResponse:
     properties:
       error:
@@ -171,8 +179,7 @@ definitions:
         type: string
       message:
         type: string
-      result:
-        type: object
+      result: {}
       success:
         type: boolean
     type: object
@@ -193,6 +200,8 @@ definitions:
     properties:
       commit:
         type: string
+      demo:
+        type: boolean
       success:
         type: boolean
       version:
@@ -425,7 +434,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: This route performs a dry run with the given phone number. This doesn't perform an actual scan.
+      description: This route performs a dry run with the given phone number. This
+        doesn't perform an actual scan.
       operationId: DryRunScanner
       parameters:
       - description: Request body

@@ -516,11 +516,15 @@
         "handlers.DryRunScannerInput": {
             "type": "object",
             "required": [
-                "number"
+                "number",
+                "options"
             ],
             "properties": {
                 "number": {
                     "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/remote.ScannerOptions"
                 }
             }
         },
@@ -549,20 +553,22 @@
         "handlers.RunScannerInput": {
             "type": "object",
             "required": [
-                "number"
+                "number",
+                "options"
             ],
             "properties": {
                 "number": {
                     "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/remote.ScannerOptions"
                 }
             }
         },
         "handlers.RunScannerResponse": {
             "type": "object",
             "properties": {
-                "result": {
-                    "type": "object"
-                }
+                "result": {}
             }
         },
         "handlers.Scanner": {
@@ -706,6 +712,10 @@
                 }
             }
         },
+        "remote.ScannerOptions": {
+            "type": "object",
+            "additionalProperties": true
+        },
         "web.JSONResponse": {
             "type": "object",
             "properties": {
@@ -729,9 +739,7 @@
                 "message": {
                     "type": "string"
                 },
-                "result": {
-                    "type": "object"
-                },
+                "result": {},
                 "success": {
                     "type": "boolean"
                 }
@@ -762,6 +770,9 @@
             "properties": {
                 "commit": {
                     "type": "string"
+                },
+                "demo": {
+                    "type": "boolean"
                 },
                 "success": {
                     "type": "boolean"
